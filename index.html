@@ -1,152 +1,1401 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deckboss -- Deck Operations Intelligence</title>
-  <style>
-    :root { --bg: #0a0e17; --surface: #121825; --border: #1e2a3a; --text: #e2e8f0; --muted: #64748b; --accent: #3b82f6; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-    nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 3rem; border-bottom: 1px solid var(--border); }
-    .logo { font-weight: 700; font-size: 1.2rem; }
-    .hero { text-align: center; padding: 5rem 0 3rem; }
-    .hero h1 { font-size: 3rem; font-weight: 700; margin-bottom: 1.25rem; }
-    .hero h1 span { color: var(--accent); }
-    .hero .sub { font-size: 1.25rem; color: var(--muted); max-width: 600px; margin: 0 auto 2rem; }
-    .badge-row { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-    .badge { background: var(--surface); border: 1px solid var(--border); padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.8rem; }
-    .section { padding: 4rem 0; }
-    .section h2 { font-size: 2rem; margin-bottom: 0.75rem; }
-    .section .lead { color: var(--muted); max-width: 680px; margin-bottom: 2.5rem; }
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
-    .card h3 { font-size: 1.1rem; margin-bottom: 0.75rem; }
-    .card p { color: var(--muted); font-size: 0.9rem; }
-    .plato-box { background: linear-gradient(135deg, #0f1a0f 0%, #0a1a0a 100%); border: 1px solid #1a3a1a; border-radius: 16px; padding: 2rem; text-align: center; margin: 2rem 0; }
-    .plato-box h3 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--accent); }
-    .plato-box p { color: var(--muted); max-width: 560px; margin: 0 auto; }
-    .stats-row { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
-    .stat { text-align: center; }
-    .stat .num { font-size: 2rem; font-weight: 700; color: var(--accent); }
-    .stat .label { font-size: 0.8rem; color: var(--muted); }
-    .cta { text-align: center; padding: 4rem 0; }
-    .cta h2 { font-size: 2.25rem; margin-bottom: 1rem; }
-    .cta p { color: var(--muted); margin-bottom: 2rem; }
-    .btn { display: inline-block; background: var(--accent); color: white; padding: 0.875rem 2rem; border-radius: 8px; font-weight: 600; text-decoration: none; }
-    .how-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; }
-    .how-step { display: flex; gap: 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
-    .how-step:last-child { border-bottom: none; }
-    .step-num { width: 40px; height: 40px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
-    .step-content h4 { font-size: 1.05rem; margin-bottom: 0.4rem; }
-    .step-content p { color: var(--muted); font-size: 0.9rem; }
-    .live-bar { background: var(--surface); border-top: 1px solid var(--border); padding: 0.75rem 0; text-align: center; }
-    .live-dot { display: inline-block; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; margin-right: 0.4rem; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-    footer { border-top: 1px solid var(--border); padding: 2rem 0; text-align: center; color: var(--muted); font-size: 0.85rem; }
-    @media (max-width: 768px) { .hero h1 { font-size: 2rem; } }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deckboss — Deck Operations Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #0f1629;
+            --bg-card: #141c30;
+            --bg-card-hover: #1a2540;
+            --accent-blue: #3b82f6;
+            --accent-blue-bright: #60a5fa;
+            --accent-blue-glow: rgba(59, 130, 246, 0.15);
+            --accent-cyan: #22d3ee;
+            --text-primary: #e8edf5;
+            --text-secondary: #8896b3;
+            --text-muted: #5a6a8a;
+            --border-color: #1e2d4a;
+            --success-green: #10b981;
+            --warning-amber: #f59e0b;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 14, 26, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 2rem;
+        }
+
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--bg-primary);
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--accent-blue-glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--accent-blue-glow);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 24px;
+            font-size: 0.85rem;
+            color: var(--accent-blue-bright);
+            margin-bottom: 2rem;
+        }
+
+        .hero-badge svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            max-width: 900px;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, var(--accent-blue-bright), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: var(--text-secondary);
+            max-width: 680px;
+            margin-bottom: 3rem;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.75rem;
+            background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.75rem;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-color: var(--text-muted);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 5rem auto 0;
+            padding: 0 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-blue-bright);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Features Section */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            background: var(--accent-blue-glow);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-blue-bright);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 52px;
+            height: 52px;
+            background: var(--accent-blue-glow);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon svg {
+            width: 26px;
+            height: 26px;
+            color: var(--accent-blue-bright);
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .feature-tag {
+            padding: 0.3rem 0.6rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Plato Section */
+        .plato-section {
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+            padding: 6rem 2rem;
+        }
+
+        .plato-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .plato-inner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .plato-content h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+        }
+
+        .plato-content h2 span {
+            color: var(--accent-cyan);
+        }
+
+        .plato-content p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .plato-content strong {
+            color: var(--text-primary);
+        }
+
+        .delta-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--accent-cyan);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .delta-box h4 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .delta-box p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        .plato-visual {
+            position: relative;
+        }
+
+        .tile-stack {
+            position: relative;
+            width: 100%;
+            height: 400px;
+        }
+
+        .tile {
+            position: absolute;
+            width: 220px;
+            height: 80px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .tile:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .tile:nth-child(1) { top: 20px; left: 20px; }
+        .tile:nth-child(2) { top: 60px; left: 70px; }
+        .tile:nth-child(3) { top: 100px; left: 120px; }
+        .tile:nth-child(4) { top: 140px; left: 170px; }
+        .tile:nth-child(5) { top: 180px; left: 220px; }
+        .tile:nth-child(6) { top: 220px; left: 270px; }
+
+        .tile-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-blue-glow);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tile-icon svg {
+            width: 16px;
+            height: 16px;
+            color: var(--accent-blue-bright);
+        }
+
+        .tile-text {
+            flex: 1;
+        }
+
+        .tile-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .tile-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        .tile-index {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--accent-cyan);
+            background: rgba(34, 211, 238, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .stack-connector {
+            position: absolute;
+            top: 55px;
+            left: 125px;
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-blue), transparent);
+            opacity: 0.3;
+        }
+
+        /* Live Status Section */
+        .status-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .status-header h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--success-green);
+        }
+
+        .status-indicator .live-dot {
+            background: var(--success-green);
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .status-metric {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .status-metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--accent-blue-bright);
+            margin-bottom: 0.25rem;
+        }
+
+        .status-metric-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-bar-visual {
+            margin-top: 2rem;
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .status-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: var(--bg-secondary);
+            padding: 6rem 2rem;
+        }
+
+        .how-it-works-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .workflow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .workflow-step {
+            position: relative;
+            padding: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -12px;
+            left: 1.5rem;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--bg-primary);
+        }
+
+        .workflow-step h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .workflow-step p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Comparison Section */
+        .comparison {
+            padding: 5rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .comparison-table {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .comparison-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+        }
+
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-row:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .comparison-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .comparison-old {
+            color: #f87171;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .comparison-new {
+            color: var(--success-green);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand .logo-icon {
+            width: 28px;
+            height: 28px;
+            font-size: 0.9rem;
+        }
+
+        .footer-brand span {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .footer-tagline {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-blue-bright);
+        }
+
+        .footer-meta {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Utility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
 </head>
 <body>
-  <nav>
-    <div class="logo">Deckboss</div>
-    <div class="badge" style="border-color: var(--accent); color: var(--accent);">PLATO Connected</div>
-  </nav>
-  <div class="container hero">
-    <h1>Intelligence That<br><span>Compounds</span></h1>
-    <p class="sub">File what matters. Accumulate intelligence. Query when you need it. PLATO turns raw activity into compound knowledge.</p>
-    <div class="badge-row">
-      <span class="badge">Delta Recording</span>
-      <span class="badge">Presence Tracking</span>
-      <span class="badge">Queryable History</span>
-    </div>
-  </div>
-  <section class="section">
-    <div class="container">
-      <h2>Everything That Matters, Filed</h2>
-      <p class="lead">Stop losing track. Start compounding.</p>
-      <div class="grid-3">
-        <div class="card">
-          <h3>Catch Processing</h3>
-          <p>Log processing decisions in real time. Species logged, condition graded, storage assigned. Every decision auditable.</p>
+    <!-- Navigation -->
+    <nav role="navigation" aria-label="Main navigation">
+        <div class="nav-inner">
+            <a href="#" class="logo" aria-label="Deckboss home">
+                <div class="logo-icon">DB</div>
+                <span class="logo-text">Deckboss</span>
+            </a>
+            <div class="nav-status">
+                <div class="live-badge">
+                    <span class="live-dot" aria-hidden="true"></span>
+                    <span id="room-status">PLATO Room Active</span>
+                </div>
+            </div>
         </div>
-        <div class="card">
-          <h3>Crew Coordination</h3>
-          <p>Track who processed what and when. The room knows the crew. Maria processed the last five salmon at 98% quality.</p>
-        </div>
-        <div class="card">
-          <h3>Equipment Tracking</h3>
-          <p>Net IDs, trap counts, gear status. Track equipment through the processing chain. Know what's in use, what's due for maintenance.</p>
-        </div>
-        <div class="card">
-          <h3>Chain of Custody</h3>
-          <p>Every fish has a history: caught, processed, stored. When a buyer asks where this came from, PLATO answers.</p>
-        </div>
-        <div class="card">
-          <h3>Processing Efficiency</h3>
-          <p>Measure throughput by crew, by species, by time of day. Surface the patterns that make your operation faster.</p>
-        </div>
-        <div class="card">
-          <h3>Audit Trail</h3>
-          <p>FDA compliance, buyer documentation, catch documentation requirements. One command generates the full paper trail from accumulated tiles.</p>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+            </svg>
+            Deck Operations Intelligence Layer
         </div>
 
-      </div>
-    </div>
-  </section>
-  <section class="section" style="background: var(--surface);">
-    <div class="container">
-      <h2>How It Works</h2>
-      <p class="lead">Three steps from activity to intelligence.</p>
-      <div class="how-box">
-        <div class="how-step">
-          <div class="step-num">1</div>
-          <div class="step-content">
-            <h4>Start a Room</h4>
-            <p>Create a PLATO room for your operation. Every tile you file goes into that room -- the room becomes the complete record.</p>
-          </div>
+        <h1>The deck never lies.<br><span>Every processing decision, tiled.</span></h1>
+
+        <p class="hero-subtitle">
+            Deckboss captures every catch decision, crew action, and equipment change — 
+            building an unbroken chain of custody from deck to dock. Real-time intelligence 
+            that compounds over every haul.
+        </p>
+
+        <div class="hero-cta">
+            <a href="#features" class="btn-primary">
+                Explore Features
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M7 17l9.2-9.2M17 17V7H7"/>
+                </svg>
+            </a>
+            <a href="#plato" class="btn-secondary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <path d="M3 9h18M9 21V9"/>
+                </svg>
+                See PLATO Integration
+            </a>
         </div>
-        <div class="how-step">
-          <div class="step-num">2</div>
-          <div class="step-content">
-            <h4>File as You Work</h4>
-            <p>Got a result? A decision? A question? One entry files it to PLATO. Delta recording means you store what changed, not the full state.</p>
-          </div>
+
+        <div class="stats-bar" role="region" aria-label="System statistics">
+            <div class="stat-item">
+                <div class="stat-value" id="tile-count">0</div>
+                <div class="stat-label">Tiles Today</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="catch-count">0</div>
+                <div class="stat-label">Catch Entries</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="crew-actions">0</div>
+                <div class="stat-label">Crew Actions</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="uptime">0%</div>
+                <div class="stat-label">System Uptime</div>
+            </div>
         </div>
-        <div class="how-step">
-          <div class="step-num">3</div>
-          <div class="step-content">
-            <h4>Query the Intelligence</h4>
-            <p>Ask questions across your accumulated history. What was the pattern last season? Which approach worked better? PLATO answers from your compound knowledge base.</p>
-          </div>
+    </header>
+
+    <!-- Features Section -->
+    <main>
+        <section class="section" id="features">
+            <div class="section-header">
+                <span class="section-label">Core Capabilities</span>
+                <h2 class="section-title">Built for the rhythm of the haul</h2>
+                <p class="section-desc">
+                    Four operational modules that talk to each other — so the whole crew 
+                    stays synced whether they're on deck, at the sort table, or in the cabin.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                        </svg>
+                    </div>
+                    <h3>Catch Processing</h3>
+                    <p>
+                        Log every species, weight, and condition the moment it hits the deck. 
+                        No more paper books that get soaked in brine or left on the sorting table. 
+                        Deckboss timestamps each entry and syncs to the PLATO room before 
+                        anyone can wash their hands.
+                    </p>
+                    <p>
+                        Supports batch entries for high-volume hauls, quality grading at the 
+                        point of assessment, and automatic conversion between weight classes 
+                        for different buyer requirements. If three boats dump at once, 
+                        the sort table crew sees what's coming before it arrives.
+                    </p>
+                    <div class="feature-tags">
+                        <span class="feature-tag">species</span>
+                        <span class="feature-tag">weight</span>
+                        <span class="feature-tag">condition</span>
+                        <span class="feature-tag">grading</span>
+                    </div>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <h3>Crew Coordination</h3>
+                    <p>
+                        Know who did what, when. Every crew member gets a processing role — 
+                        some gut, some sort, some stack ice. Deckboss tracks individual 
+                        contribution so workload stays fair and productivity stays high.
+                    </p>
+                    <p>
+                        When a big haul comes aboard, the captain sees real-time distribution 
+                        of work across the deck. If someone's drowning, the bosun can shift 
+                        assignments without walking over and yelling. Speed matters — 
+                        but accuracy matters more, and Deckboss tracks both separately.
+                    </p>
+                    <div class="feature-tags">
+                        <span class="feature-tag">roles</span>
+                        <span class="feature-tag">timing</span>
+                        <span class="feature-tag">productivity</span>
+                        <span class="feature-tag">assignments</span>
+                    </div>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3>Equipment Tracking</h3>
+                    <p>
+                        Nets rip. Traps get lost. Lines fray. Deckboss keeps a running inventory 
+                        of every piece of gear — net IDs, trap counts, line condition, 
+                        hook status. When something needs maintenance, it appears on the 
+                        tracking tile before it becomes a problem.
+                    </p>
+                    <p>
+                        Pre-trip checklists become automatic. Post-trip damage reports go 
+                        directly to the maintenance tile queue. If a net has been patched 
+                        four times this season, the deck crew knows before they haul it 
+                        again. Equipment failure mid-haul is expensive — Deckboss turns 
+                        reactive repairs into scheduled maintenance.
+                    </p>
+                    <div class="feature-tags">
+                        <span class="feature-tag">nets</span>
+                        <span class="feature-tag">traps</span>
+                        <span class="feature-tag">lines</span>
+                        <span class="feature-tag">maintenance</span>
+                    </div>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10 9 9 9 8 9"/>
+                        </svg>
+                    </div>
+                    <h3>Chain of Custody</h3>
+                    <p>
+                        From the moment a fish hits the deck to when it's offloaded at the dock, 
+                        every handoff is recorded. Who processed it, how long it was in ice, 
+                        what the temperature was, who signed off on the hold. This isn't 
+                        paperwork — it's a complete operational fingerprint.
+                    </p>
+                    <p>
+                        When a buyer asks where this batch came from, the answer is one tile 
+                        away. When a regulatory inspector wants to trace a specific catch 
+                        back through the processing chain, it's all there. Chain of custody 
+                        isn't compliance theater — it's the difference between a disputed 
+                        sale and a clean transaction.
+                    </p>
+                    <div class="feature-tags">
+                        <span class="feature-tag">traceability</span>
+                        <span class="feature-tag">handoffs</span>
+                        <span class="feature-tag">sign-offs</span>
+                        <span class="feature-tag">compliance</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- PLATO Integration Section -->
+        <section class="plato-section" id="plato">
+            <div class="plato-inner">
+                <div class="plato-content">
+                    <span class="section-label">PLATO Integration</span>
+                    <h2>Tiles stack. <span>Intelligence compounds.</span></h2>
+                    
+                    <p>
+                        Every decision made on deck becomes a tile in the PLATO room. 
+                        Not a log file, not a database entry — a tile. Something you can 
+                        see, query, and act on. Tiles stack over time, building a picture 
+                        of operational patterns that no spreadsheet can capture.
+                    </p>
+                    
+                    <p>
+                        The key insight: <strong>Deckboss doesn't dump state. It records deltas.</strong> 
+                        Only new decisions get written. Everything that stays the same — 
+                        the net that's already been counted, the crew already assigned — 
+                        doesn't generate traffic. The tile stream is an event log, not 
+                        a polling system.
+                    </p>
+
+                    <div class="delta-box">
+                        <h4>How Delta Recording Works</h4>
+                        <p>
+                            Traditional systems: "Here is the full state of the deck, every 30 seconds." 
+                            That means 99% of the data is redundant. The net count didn't change. 
+                            The crew didn't swap. The temperature held.
+                        </p>
+                        <p style="margin-top: 0.75rem;">
+                            <strong>Deckboss approach:</strong> "Net 7 was pulled at 14:32. Trap count 
+                            is now 23. Crew member Marcus moved to sorting station 2 at 14:34." 
+                            Only the <em>change</em> gets recorded. Deltas are small, fast, 
+                            and infinitely composable. When you want to know what happened 
+                            between 14:00 and 16:00, you replay the deltas — you don't 
+                            query a snapshot.
+                        </p>
+                    </div>
+
+                    <p>
+                        When tiles from catch processing, crew coordination, equipment tracking, 
+                        and chain of custody all land in the same PLATO room, patterns emerge. 
+                        You can see that catch quality drops when water temperature exceeds a 
+                        threshold. You can see that crew member productivity varies by 
+                        time of day. You can see that net 12 always needs repair after 
+                        three hauling cycles. <strong>The tiles don't just record history — 
+                        they train the operation.</strong>
+                    </p>
+                </div>
+
+                <div class="plato-visual" aria-hidden="true">
+                    <div class="tile-stack">
+                        <div class="tile">
+                            <div class="tile-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2v4M12 18v4"/>
+                                </svg>
+                            </div>
+                            <div class="tile-text">
+                                <div class="tile-label">catch_processed</div>
+                                <div class="tile-value">Lingcod · 47 lbs · Grade A</div>
+                            </div>
+                            <span class="tile-index">T-847</span>
+                        </div>
+                        <div class="tile">
+                            <div class="tile-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            <div class="tile-text">
+                                <div class="tile-label">crew_assignment</div>
+                                <div class="tile-value">Elena → Sorting Station 3</div>
+                            </div>
+                            <span class="tile-index">T-846</span>
+                        </div>
+                        <div class="tile">
+                            <div class="tile-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                </svg>
+                            </div>
+                            <div class="tile-text">
+                                <div class="tile-label">equipment_check</div>
+                                <div class="tile-value">Net 12 · Patch required</div>
+                            </div>
+                            <span class="tile-index">T-845</span>
+                        </div>
+                        <div class="tile">
+                            <div class="tile-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                </svg>
+                            </div>
+                            <div class="tile-text">
+                                <div class="tile-label">custody_handoff</div>
+                                <div class="tile-value">Hold 2 · 14:22 · Capt. signed</div>
+                            </div>
+                            <span class="tile-index">T-844</span>
+                        </div>
+                        <div class="tile">
+                            <div class="tile-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2v4M12 18v4"/>
+                                </svg>
+                            </div>
+                            <div class="tile-text">
+                                <div class="tile-label">catch_processed</div>
+                                <div class="tile-value">Dover Sole · 31 lbs · Grade B</div>
+                            </div>
+                            <span class="tile-index">T-843</span>
+                        </div>
+                        <div class="tile">
+                            <div class="tile-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            <div class="tile-text">
+                                <div class="tile-label">crew_assignment</div>
+                                <div class="tile-value">Jake → Ice Station</div>
+                            </div>
+                            <span class="tile-index">T-842</span>
+                        </div>
+                        <div class="stack-connector"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Status Section -->
+        <section class="section">
+            <div class="status-section">
+                <div class="status-header">
+                    <h3>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                        </svg>
+                        Live Deck Status
+                    </h3>
+                    <div class="status-indicator">
+                        <span class="live-dot" aria-hidden="true"></span>
+                        Streaming
+                    </div>
+                </div>
+
+                <div class="status-grid" role="region" aria-label="Current operational metrics">
+                    <div class="status-metric">
+                        <div class="status-metric-value" id="active-crew">8</div>
+                        <div class="status-metric-label">Active Crew</div>
+                    </div>
+                    <div class="status-metric">
+                        <div class="status-metric-value" id="active-hauls">2</div>
+                        <div class="status-metric-label">Active Hauls</div>
+                    </div>
+                    <div class="status-metric">
+                        <div class="status-metric-value" id="pending-tasks">14</div>
+                        <div class="status-metric-label">Pending Tasks</div>
+                    </div>
+                    <div class="status-metric">
+                        <div class="status-metric-value" id="hold-utilization">67%</div>
+                        <div class="status-metric-label">Hold Utilization</div>
+                    </div>
+                    <div class="status-metric">
+                        <div class="status-metric-value" id="water-temp">52°F</div>
+                        <div class="status-metric-label">Water Temp</div>
+                    </div>
+                    <div class="status-metric">
+                        <div class="status-metric-value" id="deck-pressure">Normal</div>
+                        <div class="status-metric-label">Deck Pressure</div>
+                    </div>
+                </div>
+
+                <div class="status-bar-visual" role="progressbar" aria-label="Processing capacity">
+                    <div class="status-bar-fill" id="capacity-bar" style="width: 73%;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <div class="how-it-works">
+            <div class="how-it-works-inner">
+                <div class="section-header">
+                    <span class="section-label">Workflow</span>
+                    <h2 class="section-title">From haul to dock — without gaps</h2>
+                    <p class="section-desc">
+                        Deckboss fits into the natural rhythm of a commercial operation. 
+                        No training montages, no process overhaul. It follows how the deck 
+                        already works.
+                    </p>
+                </div>
+
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <span class="step-number">1</span>
+                        <h4>Haul Comes Aboard</h4>
+                        <p>
+                            Net or trap comes up. Deckboss prompts for entry — species, 
+                            count estimate, visual condition. One tap or voice entry if 
+                            hands are full.
+                        </p>
+                    </div>
+                    <div class="workflow-step">
+                        <span class="step-number">2</span>
+                        <h4>Sort Table Assignment</h4>
+                        <p>
+                            Catch goes to sorting. Crew roles auto-assign based on current 
+                            workload. Captain sees who's doing what in real time.
+                        </p>
+                    </div>
+                    <div class="workflow-step">
+                        <span class="step-number">3</span>
+                        <h4>Processing Entry</h4>
+                        <p>
+                            Each processed batch gets logged with crew ID, timestamp, 
+                            and condition grade. No more manual count reconciliation.
+                        </p>
+                    </div>
+                    <div class="workflow-step">
+                        <span class="step-number">4</span>
+                        <h4>Hold Stowage</h4>
+                        <p>
+                            Handoff to hold. Temperature log starts. Chain of custody 
+                            tile confirms the transfer. Crew member signs off digitally.
+                        </p>
+                    </div>
+                    <div class="workflow-step">
+                        <span class="step-number">5</span>
+                        <h4>Offload Confirmation</h4>
+                        <p>
+                            At the dock, offload is compared against haul records. 
+                            Any discrepancy flags immediately. Clean offloads take seconds.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
-  <div class="container">
-    <div class="plato-box">
-      <h3>PLATO: The Intelligence Layer</h3>
-      <p>PLATO's delta recording means you only store what changed -- not full snapshots. 95-99% storage reduction. 100% accuracy. Your data compounds over time, not just fills up.</p>
-      <div class="stats-row">
-        <div class="stat"><div class="num">95-99%</div><div class="label">Storage Reduction</div></div>
-        <div class="stat"><div class="num">100%</div><div class="label">Record Accuracy</div></div>
-        <div class="stat"><div class="num">infinity</div><div class="label">Compounding Value</div></div>
-      </div>
-    </div>
-  </div>
-  <section class="cta">
-    <div class="container">
-      <h2>Start Compounding Your Intelligence</h2>
-      <p>Every entry compounds. Every query surfaces something new.</p>
-      <a href="https://github.com/SuperInstance/deckboss-agent" class="btn">View on GitHub</a>
-    </div>
-  </section>
-  <div class="live-bar">
-    <span><span class="live-dot"></span>PLATO rooms active -- intelligence compounding</span>
-  </div>
-  <footer>
-    <p>Deckboss is part of the Cocapn fleet.</p>
-  </footer>
+
+        <!-- Comparison Section -->
+        <section class="comparison">
+            <div class="section-header">
+                <span class="section-label">The Difference</span>
+                <h2 class="section-title">Deckboss vs. the old way</h2>
+            </div>
+
+            <div class="comparison-table" role="table" aria-label="Comparison between Deckboss and traditional deck operations">
+                <div class="comparison-header" role="row">
+                    <span role="columnheader">Dimension</span>
+                    <span role="columnheader">Traditional</span>
+                    <span role="columnheader">With Deckboss</span>
+                </div>
+                <div class="comparison-row" role="row">
+                    <span class="comparison-label" role="cell">Catch logging</span>
+                    <span class="comparison-old" role="cell">Paper books, illegible in saltwater</span>
+                    <span class="comparison-new" role="cell">Timestamped digital entries, synced instantly</span>
+                </div>
+                <div class="comparison-row" role="row">
+                    <span class="comparison-label" role="cell">Crew tracking</span>
+                    <span class="comparison-old" role="cell">Memory and shouted names</span>
+                    <span class="comparison-new" role="cell">Role assignments with real-time visibility</span>
+                </div>
+                <div class="comparison-row" role="row">
+                    <span class="comparison-label" role="cell">Equipment status</span>
+                    <span class="comparison-old" role="cell">Inspection when it breaks</span>
+                    <span class="comparison-new" role="cell">Continuous tracking, predictive alerts</span>
+                </div>
+                <div class="comparison-row" role="row">
+                    <span class="comparison-label" role="cell">Chain of custody</span>
+                    <span class="comparison-old" role="cell">Paperwork at end of day</span>
+                    <span class="comparison-new" role="cell">Every handoff recorded as it happens</span>
+                </div>
+                <div class="comparison-row" role="row">
+                    <span class="comparison-label" role="cell">Data access</span>
+                    <span class="comparison-old" role="cell">Lost book = lost history</span>
+                    <span class="comparison-new" role="cell">PLATO tiles persist indefinitely, queryable</span>
+                </div>
+                <div class="comparison-row" role="row">
+                    <span class="comparison-label" role="cell">Compliance audit</span>
+                    <span class="comparison-old" role="cell">Hours of paperwork hunting</span>
+                    <span class="comparison-new" role="cell">One-tile trace from catch to dock</span>
+                </div>
+                <div class="comparison-row" role="row">
+                    <span class="comparison-label" role="cell">Pattern recognition</span>
+                    <span class="comparison-old" role="cell">Captain's memory and intuition</span>
+                    <span class="comparison-new" role="cell">Tile history surfaces operational patterns</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="logo-icon">DB</div>
+                <span>Deckboss</span>
+            </div>
+            <p class="footer-tagline">Deck Operations Intelligence — Built for the haul, not the office.</p>
+            <nav class="footer-links" aria-label="Footer navigation">
+                <a href="#features">Features</a>
+                <a href="#plato">PLATO Integration</a>
+                <a href="#status">Live Status</a>
+                <a href="#workflow">Workflow</a>
+            </nav>
+            <p class="footer-meta">
+                Deckboss is part of the Cocapn fleet of AI agents. 
+                PLATO tile infrastructure powered by OpenClaw.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Live Update Simulation -->
+    <script>
+        (function() {
+            let tileCount = 847;
+            let catchCount = 234;
+            let crewActions = 1089;
+            let uptimePercent = 99.7;
+
+            const tileEl = document.getElementById('tile-count');
+            const catchEl = document.getElementById('catch-count');
+            const crewEl = document.getElementById('crew-actions');
+            const uptimeEl = document.getElementById('uptime');
+
+            function updateStats() {
+                tileCount += Math.floor(Math.random() * 3) + 1;
+                catchCount += Math.floor(Math.random() * 2);
+                crewActions += Math.floor(Math.random() * 5) + 2;
+
+                tileEl.textContent = tileCount;
+                catchEl.textContent = catchCount;
+                crewEl.textContent = crewActions;
+                uptimeEl.textContent = uptimePercent.toFixed(1) + '%';
+            }
+
+            // Live status updates
+            const activeCrewEl = document.getElementById('active-crew');
+            const activeHaulsEl = document.getElementById('active-hauls');
+            const pendingTasksEl = document.getElementById('pending-tasks');
+            const holdUtilEl = document.getElementById('hold-utilization');
+            const capacityBarEl = document.getElementById('capacity-bar');
+
+            function updateLiveStatus() {
+                const crewVal = 7 + Math.floor(Math.random() * 4);
+                const haulsVal = 1 + Math.floor(Math.random() * 3);
+                const pendingVal = 10 + Math.floor(Math.random() * 15);
+                const holdVal = 50 + Math.floor(Math.random() * 40);
+
+                activeCrewEl.textContent = crewVal;
+                activeHaulsEl.textContent = haulsVal;
+                pendingTasksEl.textContent = pendingVal;
+                holdUtilEl.textContent = holdVal + '%';
+                capacityBarEl.style.width = holdVal + '%';
+            }
+
+            // Initial update
+            updateStats();
+            updateLiveStatus();
+
+            // Continuous updates
+            setInterval(updateStats, 4000);
+            setInterval(updateLiveStatus, 6000);
+        })();
+    </script>
 </body>
 </html>
