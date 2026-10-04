@@ -1,0 +1,83 @@
+/* deckboss.ai — workboat: steel grey, safety orange, stencil-weight type. */
+.le-root {
+  --le-bg: #22262b;
+  --le-ink: #ece9e2;
+  --le-muted: #9aa0a8;
+  --le-accent: #ff6b1a;
+  --le-card: #2b3036;
+  --le-line: #454c55;
+  --le-go: #7fd069;
+  --le-hold: #ffc857;
+  --le-nogo: #ff5d5d;
+  --le-font: "Arial Narrow", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --le-mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+
+/* stencil-feel: heavy, tracked-out, uppercase */
+.le-wordmark {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+}
+.le-tagline {
+  text-transform: uppercase;
+  letter-spacing: .28em;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--le-accent);
+}
+.le-h1, .le-decision, .le-factor-label {
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.le-label {
+  text-transform: uppercase;
+  letter-spacing: .22em;
+  font-size: .7rem;
+  font-weight: 800;
+  color: var(--le-muted);
+}
+.le-btn {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  background: var(--le-accent);
+  border-color: var(--le-accent);
+  color: #1a1208;
+}
+.le-verdict-value { letter-spacing: .1em; font-weight: 900; }
+
+/* caution-stripe rules */
+.le-card, .sk-read {
+  position: relative;
+}
+.le-card::before, .sk-read::before {
+  content: "";
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  margin-bottom: .9rem;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--le-accent) 0 12px,
+    #1a1d20 12px 24px
+  );
+}
+
+/* the deck's read */
+.sk-read {
+  background: var(--le-card);
+  border: 1px solid var(--le-line);
+  border-radius: .6rem;
+  padding: 1rem 1.2rem;
+}
+.sk-read-line {
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin: .5rem 0 0;
+}
+.sk-read-line b { color: var(--le-accent); }
+
+.le-banner { background: #14161a; border-bottom: 3px solid var(--le-accent); }
