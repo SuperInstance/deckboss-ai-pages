@@ -1,0 +1,1 @@
+var a=Object.defineProperty;var p=(o,r,e)=>r in o?a(o,r,{enumerable:!0,configurable:!0,writable:!0,value:e}):o[r]=e;var t=(o,r,e)=>p(o,typeof r!="symbol"?r+"":r,e);import{S as d}from"./s3-compatible-DGGBpTUn.js";import"./app-Cuf7bTDT.js";class u extends d{constructor(e){super({...e,region:"auto"});t(this,"id","cloudflare-r2")}}export{u as CloudflareR2Adapter};

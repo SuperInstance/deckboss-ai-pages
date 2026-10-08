@@ -1,29 +1,12 @@
 # deckboss-ai-pages
 
-GitHub Pages source for [deckboss.ai](https://deckboss.ai).
+Production source for https://deckboss.ai — the DeckBoss PWA prototype.
 
-Part of the **Cocapn Fleet** — a constellation of domain-specific landing pages and AI agents.
+This repo is the Pages-connected source for the `deckboss-ai` Cloudflare Pages
+project (production branch `main`). Pushing to `main` redeploys deckboss.ai.
 
-## About
+Contents: production build (`dist/`) of [purplepincher/deckboss](https://github.com/purplepincher/deckboss) —
+the voice-first, offline-first fishing logbook — plus a small for-sale badge
+on the landing page (the domain is listed on Afternic).
 
-This repository contains the static site assets (HTML, CSS, images) deployed to GitHub Pages for the deckboss.ai domain.
-
-## Fleet Context
-
-The Cocapn Fleet operates 20+ interconnected domains, each with its own personality and purpose:
-
-- 🦀 [cocapn.ai](https://cocapn.ai) — Fleet hub
-- 🎮 [dmlog.ai](https://dmlog.ai) — Tabletop RPG tools
-- 🔨 [makerlog.ai](https://makerlog.ai) — Maker project tracking
-- 🌙 [luciddreamer.ai](https://luciddreamer.ai) — Lucid dreaming journal
-- 📚 [studylog.ai](https://studylog.ai) — Study partner
-- 🎣 [fishinglog.ai](https://fishinglog.ai) — Fishing intelligence
-- 🎮 [playerlog.ai](https://playerlog.ai) — Gaming tracker
-- 🔮 [purplepincher.org](https://purplepincher.org) — Agent connection portal
-- And more...
-
-## Links
-
-- Live site: https://deckboss.ai
-- Fleet hub: https://cocapn.ai
-- Fleet dashboard: http://147.224.38.131:4046/
+Replaces the earlier log-engine demo (see git history).

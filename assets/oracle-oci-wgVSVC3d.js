@@ -1,0 +1,1 @@
+var a=Object.defineProperty;var c=(e,r,o)=>r in e?a(e,r,{enumerable:!0,configurable:!0,writable:!0,value:o}):e[r]=o;var t=(e,r,o)=>c(e,typeof r!="symbol"?r+"":r,o);import{S as p}from"./s3-compatible-DGGBpTUn.js";import"./app-Cuf7bTDT.js";class l extends p{constructor(o){super(o);t(this,"id","oracle-oci")}}export{l as OracleOciAdapter};
