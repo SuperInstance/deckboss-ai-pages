@@ -1,4 +1,4 @@
-import{y as i}from"./js-yaml-Dzr747z0.js";import{v as c}from"./app-Cuf7bTDT.js";function l(t){var s;const r=i.dump(t,{noRefs:!0,lineWidth:-1,sortKeys:!1}).trimEnd(),n=((s=c(t).transcript)==null?void 0:s.text)??"",o=a(t);return`---
+import{y as i}from"./js-yaml-Dzr747z0.js";import{v as c}from"./app-BKkMQx3E.js";function l(t){var s;const r=i.dump(t,{noRefs:!0,lineWidth:-1,sortKeys:!1}).trimEnd(),n=((s=c(t).transcript)==null?void 0:s.text)??"",o=a(t);return`---
 ${r}
 ---
 
